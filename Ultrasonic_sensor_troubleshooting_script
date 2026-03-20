@@ -1,0 +1,29 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(21, GPIO.OUT)  #TRIG
+GPIO.setup(20, GPIO.In)  #ECHO
+
+GPIO.output(21, True)
+time.sleep(0.00001)
+GPIO.output(21, False)
+
+start = time.time()
+while GPIO.input(20) == 0:
+    start = time.time()
+while GPIO.input(20) == 1:
+    stop = time.time()
+
+elapsed = stop - start
+distance = (elapsed * 34300) / 2
+print(f"Distance: {distance:.1f} cm")
+GPIO.cleanup()
+
+'''
+If the distance reads consistently above 100 cm regardless of objects in front of it, 
+the sensor may be faulty or miswired. If the script throws a GPIO error, ensure
+no other script is currently using the GPIO pins by running the following in terminal:
+
+sudo killall python3
+'''
