@@ -1,0 +1,24 @@
+#This program independently tests the motor function
+
+import RPi.GPIO as GPIO
+from time import sleep
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(27, GPIO.OUT)  #direction
+GPIO.setup(13, GPIO.OUT)  #step 
+GPIO.setup(26, GPIO.OUT)  #reset
+
+GPIO.output(27, True)
+GPIO.output(26, False)
+sleep(1)
+GPIO.output(26, True)
+sleep(1)
+
+for i in range(100):
+  GPIO.output(13, True)
+  sleep(0.01)
+  GPIO.output(13, False)
+  sleep(0.01)
+
+print("Motor Test complete")
+GPIO.cleanup()
